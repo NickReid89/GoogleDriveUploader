@@ -14,6 +14,15 @@ public class UserData {
     private String password;
     private String email;
     private String directory;
+    private boolean overwrite;
+
+    public boolean isOverwrite() {
+        return overwrite;
+    }
+
+    public void setOverwrite(boolean overwrite) {
+        this.overwrite = overwrite;
+    }
 
 
 

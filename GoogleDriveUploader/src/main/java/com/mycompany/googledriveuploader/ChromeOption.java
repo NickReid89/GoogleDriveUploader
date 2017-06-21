@@ -21,6 +21,10 @@ public class ChromeOption {
     private WebDriver driver;
 
     public void ChromeOption() {
+
+    }
+
+    public void setDriver() {
         // Optional, if not specified, WebDriver will search your path for chromedriver.
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 

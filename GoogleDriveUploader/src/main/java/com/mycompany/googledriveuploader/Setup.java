@@ -6,14 +6,9 @@
 package com.mycompany.googledriveuploader;
 
 import java.awt.AWTException;
-import java.util.HashMap;
-import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 /**
@@ -28,10 +23,10 @@ public class Setup {
         user.setEmail(args[0]);
         user.setPassword(args[1]);
         user.setDirectory(args[2]);
+        user.setOverwrite("t".equals(args[3].toLowerCase()));
 
-        
         ChromeOption co = new ChromeOption();
-       
+        co.setDriver();
         co.getDriver().get("https://accounts.google.com/ServiceLogin?service=wise&passive=true&continue=http%3A%2F%2Fdrive.google.com%2F%3Futm_source%3Den_US&utm_medium=button&utm_campaign=web&utm_content=gotodrive&usp=gtd&ltmpl=drive");
         Thread.sleep(1000);
         WebElement email = co.getDriver().findElement(By.xpath(".//input[@type='email']"));
@@ -50,19 +45,33 @@ public class Setup {
             co.getDriver().findElement(By.xpath(".//div[@role='button']")).click();
             Thread.sleep(1000);
         }
-      
+
+        WebElement upload = co.getDriver().findElement(By.xpath(".//button[@class='RTMQvb Kzazxf fCmhtc hc0pBf x6jRSb a-qb-d h-sb-Ic sXaDqb']"));
         Actions action = new Actions(co.getDriver());
-        action.contextClick().sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
+        action.contextClick(upload).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
+
+        
+
         RobotUploader r = new RobotUploader(args[2]);
         r.run();
-
-    
+        
+        Thread.sleep(1000);
+        System.out.println("*************************************attempting to overwite********************************************************");
+        if (co.getDriver().findElements(By.xpath(".//div[@class='he-ua']")).size() > 0) {
+            if (user.isOverwrite()) {
+                System.out.println("overwriting");
+                co.getDriver().findElement(By.xpath(".//button[@name='yes']")).click();
+            } else {
+                System.out.println("not overwriting");
+                co.getDriver().findElement(By.xpath(".//button[@name='no']")).click();
+            }
+        }
 
         //WORKS SO FAR
         //  driver.quit();
     }
-    
-    public void setUpChrome(){
-        
+
+    public void setUpChrome() {
+
     }
 }

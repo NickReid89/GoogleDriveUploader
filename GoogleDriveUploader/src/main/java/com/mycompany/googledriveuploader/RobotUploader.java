@@ -22,9 +22,11 @@ public class RobotUploader implements Runnable {
 
     private final String location;
 
-    RobotUploader(String location) {
-        this.location = location;
+    public RobotUploader(String location) {
+        this.location = location; 
+     
     }
+
 
     @Override
     public void run() {
